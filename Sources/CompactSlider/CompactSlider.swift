@@ -242,9 +242,13 @@ public struct CompactSlider<Value: BinaryFloatingPoint, ValueLabel: View>: View 
     private var contentView: some View {
         ZStack {
             GeometryReader { proxy in
+                progressView(in: proxy.size)
+                .frame(width: proxy.size.width, height: proxy.size.height)
+                .onChange(of: dragLocationX) { onDragLocationXChange($0, size: proxy.size) }
+            }
+            .clipShape(Capsule())
+            GeometryReader { proxy in
                 ZStack {
-                    progressView(in: proxy.size)
-                    
                     if !handleVisibility.isHidden,
                        handleVisibility.isAlways || isHovering || isDragging {
                         progressHandleView(lowerProgress, size: proxy.size)
